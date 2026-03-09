@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Identity Security Audit Report — Sample Output</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a; color: #e2e8f0; line-height: 1.6; padding: 2rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .demo-banner {
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+      border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+      text-align: center; font-size: 0.9rem; color: #e0e7ff;
+    }
+    .demo-banner strong { color: #fff; }
+    .header {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid #334155; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 1.8rem; color: #60a5fa; margin-bottom: 0.5rem; }
+    .header .meta { color: #94a3b8; font-size: 0.9rem; }
+    .summary-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .summary-card {
+      background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+      padding: 1.2rem; text-align: center;
+    }
+    .summary-card .count { font-size: 2rem; font-weight: 700; }
+    .summary-card .label { color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .finding {
+      background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+      margin-bottom: 1rem; overflow: hidden;
+    }
+    .finding-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.2rem; border-bottom: 1px solid #334155;
+    }
+    .severity-badge {
+      color: #fff; padding: 0.2rem 0.6rem; border-radius: 4px;
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase; white-space: nowrap;
+    }
+    .finding-title { font-weight: 600; color: #f1f5f9; flex: 1; }
+    .finding-source {
+      color: #64748b; font-size: 0.8rem; background: #0f172a;
+      padding: 0.2rem 0.5rem; border-radius: 4px;
+    }
+    .finding-body { padding: 1rem 1.2rem; }
+    .finding-body p { color: #cbd5e1; margin-bottom: 0.75rem; }
+    .recommendation {
+      background: #172554; border-left: 3px solid #3b82f6;
+      padding: 0.75rem 1rem; border-radius: 0 4px 4px 0; margin-bottom: 0.75rem;
+      color: #93c5fd; font-size: 0.9rem;
+    }
+    .affected { font-size: 0.85rem; color: #94a3b8; }
+    .affected ul { margin-top: 0.4rem; margin-left: 1.2rem; }
+    .affected li { margin-bottom: 0.2rem; }
+    .footer {
+      text-align: center; color: #475569; font-size: 0.8rem;
+      margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #1e293b;
+    }
+    .section-title {
+      font-size: 1.2rem; color: #60a5fa; margin: 1.5rem 0 1rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid #334155;
+    }
+
+    /* Console simulation */
+    .console-section { margin-top: 3rem; }
+    .console {
+      background: #0c0c0c; border: 1px solid #333; border-radius: 8px;
+      padding: 1.5rem; font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+      font-size: 0.8rem; line-height: 1.7; overflow-x: auto; white-space: pre;
+      color: #cccccc;
+    }
+    .c-cyan { color: #3dc9b0; }
+    .c-dcyan { color: #218c74; }
+    .c-red { color: #f44747; }
+    .c-dyellow { color: #ce9178; }
+    .c-yellow { color: #dcdcaa; }
+    .c-lcyan { color: #9cdcfe; }
+    .c-gray { color: #808080; }
+    .c-dgray { color: #5a5a5a; }
+    .c-white { color: #d4d4d4; }
+    .c-green { color: #6a9955; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="demo-banner">
+      <strong>SAMPLE OUTPUT</strong> — This report demonstrates what Invoke-IdentitySecurityAudit.ps1 produces when run against an organization.
+      All data below is simulated for the fictitious company <strong>Contoso Corporation</strong>.
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CONSOLE OUTPUT SIMULATION                                     -->
+    <!-- ============================================================ -->
+
+    <div class="console-section">
+      <h2 class="section-title">Console Output</h2>
+      <div class="console">
+<span class="c-cyan">
+    ╔══════════════════════════════════════════════════════════════╗
+    ║              IDENTITY SECURITY AUDIT TOOL                   ║
+    ║          Active Directory &amp; Microsoft Entra ID              ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    Timestamp : 2026-03-09 14:32:07
+    Host      : YOURPC-01
+    User      : YOURPC-01\admin
+</span>
+<span class="c-green">  [✓] Connected to Microsoft Graph as: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2b3b6bfbbbc92b1bdbca6bda1bdfcb1bdbf">[email&#160;protected]</a></span>
+
+  Starting audit...
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Active Directory — Privileged Accounts</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-red">[Critical] </span><span class="c-white">Excessive Domain Admins</span>
+<span class="c-gray">    Found 8 Domain Admin accounts. Best practice recommends no more than 5.</span>
+<span class="c-gray">    Affected: 8 object(s)</span>
+<span class="c-dgray">      - admin.jthompson
+      - admin.mgarcia
+      - admin.rwilson
+      - admin.kpatel
+      - admin.lcheng
+      ... and 3 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Enterprise Admin Exposure</span>
+<span class="c-gray">    Found 2 Enterprise Admin account(s). This group should ideally be empty outside of forest-level changes.</span>
+<span class="c-gray">    Affected: 2 object(s)</span>
+<span class="c-dgray">      - admin.jthompson
+      - admin.rwilson</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Schema Admin Exposure</span>
+<span class="c-gray">    Found 1 Schema Admin account(s). This group should be empty unless schema changes are in progress.</span>
+<span class="c-gray">    Affected: 1 object(s)</span>
+<span class="c-dgray">      - admin.jthompson</span>
+
+  <span class="c-red">[Critical] </span><span class="c-white">Over-Privileged Service Accounts</span>
+<span class="c-gray">    Found 3 service account(s) with privileged group membership.</span>
+<span class="c-gray">    Affected: 3 object(s)</span>
+<span class="c-dgray">      - svc_backup
+      - svc_sqlprod
+      - svc-exchange</span>
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Active Directory — Authentication Security</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Weak Minimum Password Length</span>
+<span class="c-gray">    Minimum password length is 8. Recommended minimum is 14 characters.</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">No Account Lockout Policy</span>
+<span class="c-gray">    Account lockout threshold is not configured. Brute-force attacks are not mitigated.</span>
+
+  <span class="c-yellow">[Medium] </span><span class="c-white">Password Never Expires</span>
+<span class="c-gray">    Found 47 enabled account(s) with 'Password Never Expires' set.</span>
+<span class="c-gray">    Affected: 47 object(s)</span>
+<span class="c-dgray">      - svc_backup
+      - svc_sqlprod
+      - svc-exchange
+      - svc_crm
+      - j.martinez
+      ... and 42 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Legacy Authentication (NTLMv1)</span>
+<span class="c-gray">    LAN Manager compatibility level is 3. NTLMv1 may be allowed, which is vulnerable to relay and cracking attacks.</span>
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Active Directory — Identity Hygiene</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Stale User Accounts</span>
+<span class="c-gray">    Found 63 enabled user account(s) with no sign-in for 90+ days.</span>
+<span class="c-gray">    Affected: 63 object(s)</span>
+<span class="c-dgray">      - d.richardson
+      - p.oconnell
+      - m.nakamura
+      - r.fernandez
+      - t.kowalski
+      ... and 58 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Dormant Service Accounts</span>
+<span class="c-gray">    Found 5 enabled service account(s) with no activity for 60+ days.</span>
+<span class="c-gray">    Affected: 5 object(s)</span>
+<span class="c-dgray">      - svc_legacycrm
+      - sa_aboredapp
+      - svc-printold
+      - svc_aboredweb
+      - svc_aboredapi</span>
+
+  <span class="c-yellow">[Medium] </span><span class="c-white">Disabled Accounts in Privileged Groups</span>
+<span class="c-gray">    Found 4 disabled account(s) still in privileged groups.</span>
+<span class="c-gray">    Affected: 4 object(s)</span>
+<span class="c-dgray">      - ex.admin.jlee (in Domain Admins)
+      - ex.admin.bkumar (in Domain Admins)
+      - old.svc_deploy (in Administrators)
+      - ex.admin.smartin (in Server Operators)</span>
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Microsoft Entra ID — Privileged Accounts</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-red">[Critical] </span><span class="c-white">Excessive Global Admins</span>
+<span class="c-gray">    Found 7 Global Administrator(s) in Entra ID. Microsoft recommends fewer than 5.</span>
+<span class="c-gray">    Affected: 7 object(s)</span>
+<span class="c-dgray">      - James Thompson
+      - Maria Garcia
+      - Robert Wilson
+      - Kevin Patel
+      - Lisa Cheng
+      ... and 2 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Excessive Permanent Role Assignments</span>
+<span class="c-gray">    Found 18 permanent privileged role assignments. Consider using PIM eligible assignments.</span>
+<span class="c-gray">    Affected: 18 object(s)</span>
+<span class="c-dgray">      - James Thompson (Global Administrator)
+      - Maria Garcia (Global Administrator)
+      - Robert Wilson (User Administrator)
+      - Sarah Kim (Exchange Administrator)
+      - David Okafor (SharePoint Administrator)
+      ... and 13 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Over-Permissioned App Registrations</span>
+<span class="c-gray">    Found 4 app registration(s) with excessive application-level permissions.</span>
+<span class="c-gray">    Affected: 4 object(s)</span>
+<span class="c-dgray">      - Contoso-Legacy-Sync (12 app permissions)
+      - Contoso-HR-Integration (9 app permissions)
+      - DevOps-Pipeline-Prod (8 app permissions)
+      - Marketing-Analytics-Tool (7 app permissions)</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Expired App Credentials</span>
+<span class="c-gray">    Found 6 expired client secret(s) or certificate(s) on app registrations. Expired credentials indicate abandoned apps or poor lifecycle management.</span>
+<span class="c-gray">    Affected: 6 object(s)</span>
+<span class="c-dgray">      - Contoso-Legacy-Sync — secret 'prod-key' expired 2025-08-14
+      - Old-CRM-Connector — secret 'api-key-v1' expired 2025-03-01
+      - Old-CRM-Connector — certificate 'signing-cert' expired 2025-06-22
+      - Abandoned-Test-App — secret 'dev-key' expired 2024-11-30
+      - HR-Onboarding-v1 — secret 'service-key' expired 2025-12-15
+      ... and 1 more</span>
+
+  <span class="c-yellow">[Medium] </span><span class="c-white">Expiring App Credentials (30 days)</span>
+<span class="c-gray">    Found 3 client secret(s) or certificate(s) expiring within 30 days.</span>
+<span class="c-gray">    Affected: 3 object(s)</span>
+<span class="c-dgray">      - DevOps-Pipeline-Prod — secret 'deploy-key' expires 2026-03-28
+      - Contoso-HR-Integration — certificate 'auth-cert' expires 2026-04-02
+      - Finance-Reporting-App — secret 'bi-key' expires 2026-04-05</span>
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Microsoft Entra ID — Authentication Security</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">MFA Not Registered</span>
+<span class="c-gray">    Found 34 of 412 member user(s) (8.3%) without MFA registered. MFA coverage: 91.7%.</span>
+<span class="c-gray">    Affected: 34 object(s)</span>
+<span class="c-dgray">      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b6d298c4dfd5ded7c4d2c5d9d8f6d5d9d8c2d9c5d998d5d9db">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ddadf3b2beb2b3b3b8b1b19dbeb2b3a9b2aeb2f3beb2b0">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80edaeeee1ebe1edf5f2e1c0e3efeef4eff3efaee3efed">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81f5e4ecf1afe2eeeff5f3e0e2f5eef3b1b0c1e2eeeff5eef2eeafe2eeec">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b2c6d7dfc29cd1dddcc6c0d3d1c6ddc08280f2d1dddcc6ddc1dd9cd1dddf">[email&#160;protected]</a>
+      ... and 29 more</span>
+
+  <span class="c-red">[Critical] </span><span class="c-white">Legacy Authentication Not Blocked</span>
+<span class="c-gray">    No active Conditional Access policy found blocking legacy authentication protocols.</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Conditional Access Gaps</span>
+<span class="c-gray">    Found 3 gap(s) in Conditional Access coverage out of 6 recommended controls. 4 active policies found.</span>
+<span class="c-gray">    Affected: 3 object(s)</span>
+<span class="c-dgray">      - Block Legacy Auth
+      - Sign-in Risk Policy
+      - User Risk Policy</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Broadly Excluded CA Users</span>
+<span class="c-gray">    Found 2 user(s) excluded from more than half of all enabled Conditional Access policies (3+ of 4). These users may bypass critical security controls.</span>
+<span class="c-gray">    Affected: 2 object(s)</span>
+<span class="c-dgray">      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9efcecfbfff5f9f2ffededdefdf1f0eaf1edf1b0fdf1f3">[email&#160;protected]</a> (excluded from 4 of 4 policies)
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cdaca9a0a4a3e3a7b9a5a2a0bdbea2a38daea2a3b9a2bea2e3aea2a0">[email&#160;protected]</a> (excluded from 3 of 4 policies)</span>
+
+<span class="c-dcyan">  ─────────────────────────────────────────────────────────────
+  <span class="c-cyan">Microsoft Entra ID — Identity Hygiene</span>
+  ─────────────────────────────────────────────────────────────</span>
+
+  <span class="c-yellow">[Medium] </span><span class="c-white">Stale Entra ID Users</span>
+<span class="c-gray">    Found 28 enabled Entra ID user(s) with no sign-in for 90+ days.</span>
+<span class="c-gray">    Affected: 28 object(s)</span>
+<span class="c-dgray">      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4e2a603c272d262f3c2a3d21200e2d21203a213d21602d2123">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3a4a1455595554545f56567a5955544e55495514595557">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f499da9a959f9599818695b4979b9a809b879bda979b99">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c7b5e9a1a2b5a9a6a9a3a2bd87a4a8a9b3a8b4a8e9a4a8aa">[email&#160;protected]</a>
+      - <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="71055f1a1e06101d021a1831121e1f051e021e5f121e1c">[email&#160;protected]</a>
+      ... and 23 more</span>
+
+  <span class="c-yellow">[Medium] </span><span class="c-white">Stale Guest Accounts</span>
+<span class="c-gray">    Found 15 of 42 guest account(s) with no sign-in for 90+ days.</span>
+<span class="c-gray">    Affected: 15 object(s)</span>
+<span class="c-dgray">      - vendor.jdoe_fabrikam.com#EXT#@contoso.onmicrosoft.com
+      - partner.asmith_northwind.com#EXT#@contoso.onmicrosoft.com
+      - consultant.bwong_litware.com#EXT#@contoso.onmicrosoft.com
+      - vendor.cjones_adatum.com#EXT#@contoso.onmicrosoft.com
+      - partner.dpatel_fourthcoffee.com#EXT#@contoso.onmicrosoft.com
+      ... and 10 more</span>
+
+  <span class="c-dyellow">[High] </span><span class="c-white">Dormant Service Principals</span>
+<span class="c-gray">    Found 22 application service principal(s) with no sign-in for 60+ days.</span>
+<span class="c-gray">    Affected: 22 object(s)</span>
+<span class="c-dgray">      - Old-CRM-Connector (a1b2c3d4-e5f6-7890-abcd-ef1234567890)
+      - Abandoned-Test-App (b2c3d4e5-f6a7-8901-bcde-f12345678901)
+      - Legacy-Sync-Tool (c3d4e5f6-a7b8-9012-cdef-123456789012)
+      - Dev-Scratch-App (d4e5f6a7-b8c9-0123-defa-234567890123)
+      - QA-TestHarness-v2 (e5f6a7b8-c9d0-1234-efab-345678901234)
+      ... and 17 more</span>
+
+<span class="c-cyan">
+  ═══════════════════════════════════════════════════════════
+  AUDIT SUMMARY
+  ═══════════════════════════════════════════════════════════</span>
+
+<span class="c-white">  Total Checks    : 20</span>
+<span class="c-red">  Critical        : 4</span>
+<span class="c-dyellow">  High            : 11</span>
+<span class="c-yellow">  Medium          : 5</span>
+<span class="c-lcyan">  Low             : 0</span>
+<span class="c-gray">  Informational   : 0</span>
+
+<span class="c-red">  ⚠  CRITICAL FINDINGS REQUIRE IMMEDIATE ATTENTION
+     → Excessive Domain Admins: Found 8 Domain Admin accounts. Best practice recommends no more than 5.
+     → Over-Privileged Service Accounts: Found 3 service account(s) with privileged group membership.
+     → Excessive Global Admins: Found 7 Global Administrator(s) in Entra ID. Microsoft recommends fewer than 5.
+     → Legacy Authentication Not Blocked: No active Conditional Access policy found blocking legacy authentication protocols.</span>
+
+<span class="c-green">  [+] HTML report saved to: .\IdentitySecurityAudit_20260309_143207.html</span>
+
+<span class="c-green">  Audit complete.</span>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- HTML REPORT (as it would be generated)                        -->
+    <!-- ============================================================ -->
+
+    <h2 class="section-title" style="margin-top: 3rem;">Generated HTML Report</h2>
+
+    <div class="header">
+      <h1>Identity Security Audit Report</h1>
+      <div class="meta">
+        Generated: 2026-03-09 14:32:07 |
+        Host: YOURPC-01 |
+        Auditor: CONTOSO\admin.jthompson
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="count" style="color: #60a5fa;">20</div>
+        <div class="label">Total Checks</div>
+      </div>
+      <div class="summary-card">
+        <div class="count" style="color: #dc2626;">4</div>
+        <div class="label">Critical</div>
+      </div>
+      <div class="summary-card">
+        <div class="count" style="color: #ea580c;">11</div>
+        <div class="label">High</div>
+      </div>
+      <div class="summary-card">
+        <div class="count" style="color: #ca8a04;">5</div>
+        <div class="label">Medium</div>
+      </div>
+      <div class="summary-card">
+        <div class="count" style="color: #0891b2;">0</div>
+        <div class="label">Low</div>
+      </div>
+      <div class="summary-card">
+        <div class="count" style="color: #6b7280;">0</div>
+        <div class="label">Info</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Findings</h2>
+
+    <!-- CRITICAL -->
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #dc2626;">Critical</span>
+        <span class="finding-title">Excessive Domain Admins</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 8 Domain Admin accounts. Best practice recommends no more than 5.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Review and remove unnecessary Domain Admin memberships. Use least-privilege delegation.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (8):</strong>
+          <ul>
+            <li>admin.jthompson</li>
+            <li>admin.mgarcia</li>
+            <li>admin.rwilson</li>
+            <li>admin.kpatel</li>
+            <li>admin.lcheng</li>
+            <li>admin.dokafor</li>
+            <li>admin.skim</li>
+            <li>admin.nkovacs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #dc2626;">Critical</span>
+        <span class="finding-title">Over-Privileged Service Accounts</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 3 service account(s) with privileged group membership.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Remove service accounts from privileged groups. Use Group Managed Service Accounts (gMSA) with least-privilege permissions.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (3):</strong>
+          <ul>
+            <li>svc_backup</li>
+            <li>svc_sqlprod</li>
+            <li>svc-exchange</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #dc2626;">Critical</span>
+        <span class="finding-title">Excessive Global Admins</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 7 Global Administrator(s) in Entra ID. Microsoft recommends fewer than 5.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Reduce Global Admins to fewer than 5. Use least-privileged roles (e.g., User Admin, Exchange Admin).
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (7):</strong>
+          <ul>
+            <li>James Thompson</li>
+            <li>Maria Garcia</li>
+            <li>Robert Wilson</li>
+            <li>Kevin Patel</li>
+            <li>Lisa Cheng</li>
+            <li>David Okafor</li>
+            <li>Sarah Kim</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #dc2626;">Critical</span>
+        <span class="finding-title">Legacy Authentication Not Blocked</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>No active Conditional Access policy found blocking legacy authentication protocols.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Create a Conditional Access policy to block legacy authentication for all users. Legacy auth bypasses MFA.
+        </div>
+      </div>
+    </div>
+
+    <!-- HIGH -->
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Enterprise Admin Exposure</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 2 Enterprise Admin account(s). This group should ideally be empty outside of forest-level changes.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Remove permanent Enterprise Admin memberships. Use just-in-time elevation.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (2):</strong>
+          <ul>
+            <li>admin.jthompson</li>
+            <li>admin.rwilson</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Schema Admin Exposure</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 1 Schema Admin account(s). This group should be empty unless schema changes are in progress.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Remove all Schema Admin memberships when not actively performing schema modifications.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (1):</strong>
+          <ul>
+            <li>admin.jthompson</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Weak Minimum Password Length</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Minimum password length is 8. Recommended minimum is 14 characters.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Increase minimum password length to 14+ characters. Consider passphrases.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">No Account Lockout Policy</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Account lockout threshold is not configured. Brute-force attacks are not mitigated.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Set account lockout threshold to 10-20 attempts with a 30-minute lockout duration.
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Legacy Authentication (NTLMv1)</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>LAN Manager compatibility level is 3. NTLMv1 may be allowed, which is vulnerable to relay and cracking attacks.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Set LmCompatibilityLevel to 5 (Send NTLMv2 response only, refuse LM &amp; NTLM).
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Stale User Accounts</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 63 enabled user account(s) with no sign-in for 90+ days.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Disable or delete stale accounts. Implement automated lifecycle management.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (63):</strong>
+          <ul>
+            <li>d.richardson</li>
+            <li>p.oconnell</li>
+            <li>m.nakamura</li>
+            <li>r.fernandez</li>
+            <li>t.kowalski</li>
+            <li>a.bergstrom</li>
+            <li>s.oduya</li>
+            <li>c.delacroix</li>
+            <li>w.tanaka</li>
+            <li>j.moreno</li>
+            <li><em>... and 53 more</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Dormant Service Accounts</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 5 enabled service account(s) with no activity for 60+ days.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Disable dormant service accounts. Migrate to Group Managed Service Accounts (gMSA) where possible.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (5):</strong>
+          <ul>
+            <li>svc_legacycrm</li>
+            <li>sa_abandonedapp</li>
+            <li>svc-printold</li>
+            <li>svc_abandonedweb</li>
+            <li>svc_abandonedapi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Excessive Permanent Role Assignments</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 18 permanent privileged role assignments. Consider using PIM eligible assignments.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Convert permanent assignments to PIM-eligible. Require justification and approval for activation.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (18):</strong>
+          <ul>
+            <li>James Thompson (Global Administrator)</li>
+            <li>Maria Garcia (Global Administrator)</li>
+            <li>Robert Wilson (User Administrator)</li>
+            <li>Sarah Kim (Exchange Administrator)</li>
+            <li>David Okafor (SharePoint Administrator)</li>
+            <li>Kevin Patel (Security Administrator)</li>
+            <li>Lisa Cheng (Application Administrator)</li>
+            <li>Nina Kovacs (Cloud Application Administrator)</li>
+            <li>Tom Bradley (User Administrator)</li>
+            <li>Aisha Hassan (Exchange Administrator)</li>
+            <li><em>... and 8 more</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Over-Permissioned App Registrations</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 4 app registration(s) with excessive application-level permissions.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Review and reduce application permissions. Use delegated permissions where possible.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (4):</strong>
+          <ul>
+            <li>Contoso-Legacy-Sync (12 app permissions)</li>
+            <li>Contoso-HR-Integration (9 app permissions)</li>
+            <li>DevOps-Pipeline-Prod (8 app permissions)</li>
+            <li>Marketing-Analytics-Tool (7 app permissions)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Expired App Credentials</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 6 expired client secret(s) or certificate(s) on app registrations. Expired credentials indicate abandoned apps or poor lifecycle management.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Remove expired credentials. Delete app registrations that are no longer in use. Establish a credential rotation policy.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (6):</strong>
+          <ul>
+            <li>Contoso-Legacy-Sync — secret 'prod-key' expired 2025-08-14</li>
+            <li>Old-CRM-Connector — secret 'api-key-v1' expired 2025-03-01</li>
+            <li>Old-CRM-Connector — certificate 'signing-cert' expired 2025-06-22</li>
+            <li>Abandoned-Test-App — secret 'dev-key' expired 2024-11-30</li>
+            <li>HR-Onboarding-v1 — secret 'service-key' expired 2025-12-15</li>
+            <li>Finance-Reporting-App — secret 'old-bi-key' expired 2026-01-10</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">MFA Not Registered</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 34 of 412 member user(s) (8.3%) without MFA registered. MFA coverage: 91.7%.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Enforce MFA registration via Conditional Access or Security Defaults. Target 100% coverage.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (34):</strong>
+          <ul>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="24400a564d474c455640574b4a64474b4a504b574b0a474b49">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e292cc8d818d8c8c878e8ea2818d8c968d918dcc818d8f">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0c6122626d676d61797e6d4c6f636278637f63226f6361">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="394d5c5449175a56574d4b585a4d564b0908795a56574d564a56175a5654">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="75011018055b161a1b01071416011a07454735161a1b011a061a5b161a18">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bdc9d8d0cd93ded2d3c9cfdcdec9d2cf8d8efdded2d3c9d2ced293ded2d0">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3a48145c5f48545b545e5f407a5955544e55495514595557">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7e0a501511091f120d15173e1d11100a110d11501d1113">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1f7e317d7a6d786c6b6d70725f7c70716b706c70317c7072">[email&#160;protected]</a></li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="05762b6a61707c6445666a6b716a766a2b666a68">[email&#160;protected]</a></li>
+            <li><em>... and 24 more</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Conditional Access Gaps</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 3 gap(s) in Conditional Access coverage out of 6 recommended controls. 4 active policies found.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Implement missing Conditional Access policies for comprehensive protection.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (3):</strong>
+          <ul>
+            <li>Block Legacy Auth</li>
+            <li>Sign-in Risk Policy</li>
+            <li>User Risk Policy</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Broadly Excluded CA Users</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 2 user(s) excluded from more than half of all enabled Conditional Access policies (3+ of 4). These users may bypass critical security controls.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Review all CA exclusions. Replace permanent user exclusions with time-limited exceptions or use a dedicated break-glass account group.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (2):</strong>
+          <ul>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f0d1d0a0e0408030e1c1c2f0c00011b001c00410c0002">[email&#160;protected]</a> (excluded from 4 of 4 policies)</li>
+            <li><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e786838a8e89c98d938f888a97948889a784888993889488c984888a">[email&#160;protected]</a> (excluded from 3 of 4 policies)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ea580c;">High</span>
+        <span class="finding-title">Dormant Service Principals</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 22 application service principal(s) with no sign-in for 60+ days.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Review and disable or delete dormant service principals. Remove unused app registrations.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (22):</strong>
+          <ul>
+            <li>Old-CRM-Connector (a1b2c3d4-e5f6-7890-abcd-ef1234567890)</li>
+            <li>Abandoned-Test-App (b2c3d4e5-f6a7-8901-bcde-f12345678901)</li>
+            <li>Legacy-Sync-Tool (c3d4e5f6-a7b8-9012-cdef-123456789012)</li>
+            <li>Dev-Scratch-App (d4e5f6a7-b8c9-0123-defa-234567890123)</li>
+            <li>QA-TestHarness-v2 (e5f6a7b8-c9d0-1234-efab-345678901234)</li>
+            <li>Marketing-Old-API (f6a7b8c9-d0e1-2345-fab0-456789012345)</li>
+            <li>Staging-Auth-Proxy (a7b8c9d0-e1f2-3456-ab01-567890123456)</li>
+            <li>Deprecated-Webhook (b8c9d0e1-f2a3-4567-bc12-678901234567)</li>
+            <li>Temp-DataMigration (c9d0e1f2-a3b4-5678-cd23-789012345678)</li>
+            <li>Old-Monitoring-Agent (d0e1f2a3-b4c5-6789-de34-890123456789)</li>
+            <li><em>... and 12 more</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDIUM -->
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ca8a04;">Medium</span>
+        <span class="finding-title">Password Never Expires</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 47 enabled account(s) with 'Password Never Expires' set.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Review and remediate. Use gMSA for service accounts. Enforce rotation for user accounts.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (47):</strong>
+          <ul>
+            <li>svc_backup</li>
+            <li>svc_sqlprod</li>
+            <li>svc-exchange</li>
+            <li>svc_crm</li>
+            <li>j.martinez</li>
+            <li>l.nguyen</li>
+            <li>svc_legacycrm</li>
+            <li>sa_abandonedapp</li>
+            <li>svc-printold</li>
+            <li>svc_sharepoint</li>
+            <li><em>... and 37 more</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ca8a04;">Medium</span>
+        <span class="finding-title">Disabled Accounts in Privileged Groups</span>
+        <span class="finding-source">Active Directory</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 4 disabled account(s) still in privileged groups.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Remove disabled accounts from all privileged groups immediately.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (4):</strong>
+          <ul>
+            <li>ex.admin.jlee (in Domain Admins)</li>
+            <li>ex.admin.bkumar (in Domain Admins)</li>
+            <li>old.svc_deploy (in Administrators)</li>
+            <li>ex.admin.smartin (in Server Operators)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <div class="finding-header">
+        <span class="severity-badge" style="background-color: #ca8a04;">Medium</span>
+        <span class="finding-title">Expiring App Credentials (30 days)</span>
+        <span class="finding-source">Microsoft Entra ID</span>
+      </div>
+      <div class="finding-body">
+        <p>Found 3 client secret(s) or certificate(s) expiring within 30 days.</p>
+        <div class="recommendation">
+          <strong>Recommendation:</strong> Rotate credentials before expiry to avoid service disruptions. Use managed identities where possible.
+        </div>
+        <div class="affected">
+          <strong>Affected Objects (3):</strong>
+          <ul>
+            <li>DevOps-Pipeline-Prod — secret 'deploy-key' expires 2026-03-28</li>
+            <li>Contoso-HR-Integration — certificate 'auth-cert' expires 2026-04-02</li>
+           
