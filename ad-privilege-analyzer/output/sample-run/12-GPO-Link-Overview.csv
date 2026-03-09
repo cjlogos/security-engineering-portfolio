@@ -1,0 +1,5 @@
+﻿"LinkedTargetName","LinkedTargetDN","GpoDisplayName","GpoDN","LinkEnabled","LinkEnforced"
+"mocklab.local","DC=mocklab,DC=local","Default Domain Policy","CN={31B2F340-016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System,DC=mocklab,DC=local","True","False"
+"Servers","OU=Servers,DC=mocklab,DC=local","Server Hardening Policy","CN={A1B2C3D4-1234-5678-9ABC-DEF012345678},CN=Policies,CN=System,DC=mocklab,DC=local","True","True"
+"Users","OU=Users,DC=mocklab,DC=local","User Lockout Policy","CN={E5F6A7B8-ABCD-1234-5678-90ABCDEF1234},CN=Policies,CN=System,DC=mocklab,DC=local","True","False"
+"Users","OU=Users,DC=mocklab,DC=local","Legacy Mapping Policy","CN={DEADBEEF-CAFE-BABE-DEAD-BEEF00000001},CN=Policies,CN=System,DC=mocklab,DC=local","False","False"

@@ -1,0 +1,5 @@
+﻿"ObjectName","ObjectCategory","DistinguishedName","IdentityReference","Rights","AccessControlType","IsInherited","InheritanceType","ObjectTypeGuid","InheritedObjectType","RiskTags"
+"Domain Admins","PrivilegedGroup","CN=Domain Admins,OU=Groups,DC=mocklab,DC=local","MOCKLAB\svc_monitor","WriteOwner","Allow","False","None",,,"WriteOwner"
+"Servers","OU","OU=Servers,DC=mocklab,DC=local","MOCKLAB\helpdesk.lead","GenericWrite","Allow","False","All",,,"GenericWrite"
+"Domain Admins","PrivilegedGroup","CN=Domain Admins,OU=Groups,DC=mocklab,DC=local","MOCKLAB\dns.admin","WriteProperty","Allow","False","None","bf9679c0-0de6-11d0-a285-00aa003049e2",,"WriteMember"
+"Domain Root","Domain","DC=mocklab,DC=local","MOCKLAB\svc_proxy","ExtendedRight","Allow","False","Descendents","00299570-246d-11d0-a768-00aa006e0529",,"ExtendedRight,ResetPassword"

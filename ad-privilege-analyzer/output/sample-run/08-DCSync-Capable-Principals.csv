@@ -1,0 +1,5 @@
+﻿"Principal","HasGetChanges","HasGetChangesAll","CanDCSync","Severity","Notes"
+"MOCKLAB\Domain Controllers","True","True","True","INFO","Expected built-in principal"
+"NT AUTHORITY\ENTERPRISE DOMAIN CONTROLLERS","True","True","True","INFO","Expected built-in principal"
+"BUILTIN\Administrators","True","True","True","INFO","Expected built-in principal"
+"MOCKLAB\svc_replication","True","True","True","Critical","NON-DEFAULT DCSync rights - investigate immediately"

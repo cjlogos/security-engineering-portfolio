@@ -1,0 +1,7 @@
+﻿"RiskType","SamAccountName","DistinguishedName","Detail","Severity"
+"KerberoastableUser","svc_monitor","CN=svc_monitor,OU=Users,DC=mocklab,DC=local","HTTP/monitor.mocklab.local:8443","High"
+"ASREPRoastableUser","temp.contractor","CN=temp.contractor,OU=Users,DC=mocklab,DC=local","DoesNotRequirePreAuth = True","Medium"
+"UnconstrainedDelegationUser","svc_exchange","CN=svc_exchange,OU=Users,DC=mocklab,DC=local","TrustedForDelegation = True","High"
+"KerberoastableUser","svc_web","CN=svc_web,OU=Users,DC=mocklab,DC=local","HTTP/web01.mocklab.local","Medium"
+"KerberoastableUser","svc_sql","CN=svc_sql,OU=Users,DC=mocklab,DC=local","MSSQLSvc/SQL01.mocklab.local:1433; MSSQLSvc/SQL01.mocklab.local","High"
+"ConstrainedDelegationUser","svc_proxy","CN=svc_proxy,OU=Users,DC=mocklab,DC=local","cifs/FILE01.mocklab.local; cifs/FILE02.mocklab.local","Medium"

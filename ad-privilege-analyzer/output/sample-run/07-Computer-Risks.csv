@@ -1,0 +1,5 @@
+﻿"RiskType","SamAccountName","DistinguishedName","Detail","Severity"
+"ConstrainedDelegationComputer","WEB01$","CN=WEB01,OU=Servers,DC=mocklab,DC=local","http/intranet.mocklab.local","Medium"
+"UnconstrainedDelegationComputer","DC01$","CN=DC01,OU=Servers,DC=mocklab,DC=local","Windows Server 2022 Datacenter","High"
+"UnconstrainedDelegationComputer","DC02$","CN=DC02,OU=Servers,DC=mocklab,DC=local","Windows Server 2022 Datacenter","High"
+"UnconstrainedDelegationComputer","APP-SERVER01$","CN=APP-SERVER01,OU=Servers,DC=mocklab,DC=local","Windows Server 2019 Standard","High"

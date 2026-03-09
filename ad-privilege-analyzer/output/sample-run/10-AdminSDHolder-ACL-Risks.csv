@@ -1,0 +1,3 @@
+﻿"ObjectName","ObjectCategory","DistinguishedName","IdentityReference","Rights","AccessControlType","IsInherited","InheritanceType","ObjectTypeGuid","InheritedObjectType","RiskTags"
+"AdminSDHolder","AdminSDHolder","CN=AdminSDHolder,CN=System,DC=mocklab,DC=local","MOCKLAB\svc_exchange","GenericAll","Allow","False","None",,,"GenericAll"
+"AdminSDHolder","AdminSDHolder","CN=AdminSDHolder,CN=System,DC=mocklab,DC=local","MOCKLAB\helpdesk.lead","WriteDacl","Allow","False","None",,,"WriteDacl"

@@ -1,0 +1,3 @@
+﻿"Name","Source","Target","Direction","TrustType","ForestTransitive","SelectiveAuthentication","SIDFilteringQuarantined","IntraForest"
+"partner.corp","mocklab.local","partner.corp","Bidirectional","External","False","False","True","False"
+"dev.mocklab.local","mocklab.local","dev.mocklab.local","Bidirectional","ParentChild","True","False","False","True"

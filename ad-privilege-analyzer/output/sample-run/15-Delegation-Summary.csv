@@ -1,0 +1,7 @@
+﻿"RiskType","SamAccountName","DistinguishedName","Detail","Severity"
+"UnconstrainedDelegationUser","svc_exchange","CN=svc_exchange,OU=Users,DC=mocklab,DC=local","TrustedForDelegation = True","High"
+"ConstrainedDelegationUser","svc_proxy","CN=svc_proxy,OU=Users,DC=mocklab,DC=local","cifs/FILE01.mocklab.local; cifs/FILE02.mocklab.local","Medium"
+"ConstrainedDelegationComputer","WEB01$","CN=WEB01,OU=Servers,DC=mocklab,DC=local","http/intranet.mocklab.local","Medium"
+"UnconstrainedDelegationComputer","DC01$","CN=DC01,OU=Servers,DC=mocklab,DC=local","Windows Server 2022 Datacenter","High"
+"UnconstrainedDelegationComputer","DC02$","CN=DC02,OU=Servers,DC=mocklab,DC=local","Windows Server 2022 Datacenter","High"
+"UnconstrainedDelegationComputer","APP-SERVER01$","CN=APP-SERVER01,OU=Servers,DC=mocklab,DC=local","Windows Server 2019 Standard","High"

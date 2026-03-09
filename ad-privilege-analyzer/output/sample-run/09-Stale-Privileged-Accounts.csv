@@ -1,0 +1,5 @@
+﻿"SamAccountName","Name","DistinguishedName","Enabled","PrivilegedGroups","PasswordLastSet","LastLogonTimestamp","StaleReasons","Severity"
+"old.admin","old.admin","CN=old.admin,OU=Users,DC=mocklab,DC=local","True","Administrators; Domain Admins","10/25/2024 10:17:59 AM","2/2/2025 10:17:59 AM","Password 500 days old; Last logon 400 days ago","High"
+"setup.admin","setup.admin","CN=setup.admin,OU=Users,DC=mocklab,DC=local","False","Administrators; Domain Admins","7/17/2024 10:17:59 AM","1/1/0001 12:00:00 AM","Password 600 days old; Last logon 739683 days ago","High"
+"svc_backup","svc_backup","CN=svc_backup,OU=Users,DC=mocklab,DC=local","True","Backup Operators","5/13/2025 10:17:59 AM","7/2/2025 10:17:59 AM","Last logon 250 days ago","Medium"
+"schema.admin","schema.admin","CN=schema.admin,OU=Users,DC=mocklab,DC=local","True","Schema Admins","12/30/2023 10:17:59 AM","4/8/2024 10:17:59 AM","Password 800 days old; Last logon 700 days ago","High"
