@@ -35,3 +35,11 @@ FindingType,Name,SamAccountName,Risk
 Domain Admin Member,John Smith,jsmith,HIGH
 Unconstrained Delegation,APP-SERVER01,APP-SERVER01$,HIGH
 AdminCount Account,svc_backup,svc_backup,MEDIUM
+
+## Usage
+
+Import the Active Directory module and run the analyzer:
+
+```powershell
+Import-Module ActiveDirectory
+.\Invoke-ADPrivilegeAnalyzer.ps1
