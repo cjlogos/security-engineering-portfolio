@@ -1,0 +1,233 @@
+{
+  "report_generated": "2026-03-10T11:16:18Z",
+  "total_detections": 5,
+  "severity_summary": {
+    "critical": 0,
+    "high": 3,
+    "medium": 2,
+    "low": 0
+  },
+  "detections": [
+    {
+      "attack_type": "brute_force",
+      "severity": "high",
+      "confidence": 1.0,
+      "summary": "Brute force attack detected against account 'corp\\admin': 25 failed logins from 1 source(s) within 5 minutes.",
+      "first_seen": "2025-03-09T08:00:00Z",
+      "last_seen": "2025-03-09T08:04:00Z",
+      "source_ips": [
+        "10.0.50.101"
+      ],
+      "target_accounts": [
+        "corp\\admin"
+      ],
+      "event_count": 25,
+      "mitre_technique": "Brute Force",
+      "mitre_id": "T1110.001",
+      "recommendation": "Immediately lock the targeted account and investigate the source IP(s). Review for successful logons following the attack window. Consider IP-based blocking.",
+      "details": {
+        "sub_statuses": [
+          "Incorrect password"
+        ],
+        "logon_types": [
+          3
+        ]
+      }
+    },
+    {
+      "attack_type": "credential_stuffing",
+      "severity": "high",
+      "confidence": 1.0,
+      "summary": "Credential stuffing detected from 198.51.100.47: 20 unique accounts targeted with 20 attempts in 5 minutes.",
+      "first_seen": "2025-03-09T09:00:00Z",
+      "last_seen": "2025-03-09T09:02:32Z",
+      "source_ips": [
+        "198.51.100.47"
+      ],
+      "target_accounts": [
+        "corp\\user1",
+        "corp\\user10",
+        "corp\\user11",
+        "corp\\user12",
+        "corp\\user13",
+        "corp\\user14",
+        "corp\\user15",
+        "corp\\user16",
+        "corp\\user17",
+        "corp\\user18",
+        "corp\\user19",
+        "corp\\user2",
+        "corp\\user20",
+        "corp\\user3",
+        "corp\\user4",
+        "corp\\user5",
+        "corp\\user6",
+        "corp\\user7",
+        "corp\\user8",
+        "corp\\user9"
+      ],
+      "event_count": 20,
+      "mitre_technique": "Credential Stuffing",
+      "mitre_id": "T1110.004",
+      "recommendation": "Block the source IP immediately. Check if any accounts had successful logons after the attack. Enforce MFA across targeted accounts. Cross-reference credentials against known breach databases.",
+      "details": {
+        "avg_attempts_per_account": 1.0,
+        "sub_statuses": [
+          "Incorrect password"
+        ]
+      }
+    },
+    {
+      "attack_type": "password_spraying",
+      "severity": "high",
+      "confidence": 1.0,
+      "summary": "Password spraying detected from 198.51.100.47: 20 accounts targeted with max 1 attempt(s) per account over 30 minutes.",
+      "first_seen": "2025-03-09T09:00:00Z",
+      "last_seen": "2025-03-09T09:02:32Z",
+      "source_ips": [
+        "198.51.100.47"
+      ],
+      "target_accounts": [
+        "corp\\user1",
+        "corp\\user10",
+        "corp\\user11",
+        "corp\\user12",
+        "corp\\user13",
+        "corp\\user14",
+        "corp\\user15",
+        "corp\\user16",
+        "corp\\user17",
+        "corp\\user18",
+        "corp\\user19",
+        "corp\\user2",
+        "corp\\user20",
+        "corp\\user3",
+        "corp\\user4",
+        "corp\\user5",
+        "corp\\user6",
+        "corp\\user7",
+        "corp\\user8",
+        "corp\\user9"
+      ],
+      "event_count": 20,
+      "mitre_technique": "Password Spraying",
+      "mitre_id": "T1110.003",
+      "recommendation": "Block the source IP. Enforce MFA organization-wide. Audit targeted accounts for successful logons. Consider implementing smart lockout policies that track distributed failures across accounts.",
+      "details": {
+        "max_attempts_per_account": 1,
+        "avg_attempts_per_account": 1.0,
+        "attempt_distribution": {
+          "corp\\user1": 1,
+          "corp\\user2": 1,
+          "corp\\user3": 1,
+          "corp\\user4": 1,
+          "corp\\user5": 1,
+          "corp\\user6": 1,
+          "corp\\user7": 1,
+          "corp\\user8": 1,
+          "corp\\user9": 1,
+          "corp\\user10": 1,
+          "corp\\user11": 1,
+          "corp\\user12": 1,
+          "corp\\user13": 1,
+          "corp\\user14": 1,
+          "corp\\user15": 1,
+          "corp\\user16": 1,
+          "corp\\user17": 1,
+          "corp\\user18": 1,
+          "corp\\user19": 1,
+          "corp\\user20": 1
+        }
+      }
+    },
+    {
+      "attack_type": "credential_stuffing",
+      "severity": "medium",
+      "confidence": 0.65,
+      "summary": "Credential stuffing detected from 203.0.113.88: 13 unique accounts targeted with 26 attempts in 5 minutes.",
+      "first_seen": "2025-03-09T10:00:00Z",
+      "last_seen": "2025-03-09T10:05:00Z",
+      "source_ips": [
+        "203.0.113.88"
+      ],
+      "target_accounts": [
+        "corp\\employee1",
+        "corp\\employee10",
+        "corp\\employee11",
+        "corp\\employee12",
+        "corp\\employee13",
+        "corp\\employee2",
+        "corp\\employee3",
+        "corp\\employee4",
+        "corp\\employee5",
+        "corp\\employee6",
+        "corp\\employee7",
+        "corp\\employee8",
+        "corp\\employee9"
+      ],
+      "event_count": 26,
+      "mitre_technique": "Credential Stuffing",
+      "mitre_id": "T1110.004",
+      "recommendation": "Block the source IP immediately. Check if any accounts had successful logons after the attack. Enforce MFA across targeted accounts. Cross-reference credentials against known breach databases.",
+      "details": {
+        "avg_attempts_per_account": 2.0,
+        "sub_statuses": [
+          "Incorrect password"
+        ]
+      }
+    },
+    {
+      "attack_type": "password_spraying",
+      "severity": "medium",
+      "confidence": 0.95,
+      "summary": "Password spraying detected from 203.0.113.88: 15 accounts targeted with max 2 attempt(s) per account over 30 minutes.",
+      "first_seen": "2025-03-09T10:00:00Z",
+      "last_seen": "2025-03-09T10:05:48Z",
+      "source_ips": [
+        "203.0.113.88"
+      ],
+      "target_accounts": [
+        "corp\\employee1",
+        "corp\\employee10",
+        "corp\\employee11",
+        "corp\\employee12",
+        "corp\\employee13",
+        "corp\\employee14",
+        "corp\\employee15",
+        "corp\\employee2",
+        "corp\\employee3",
+        "corp\\employee4",
+        "corp\\employee5",
+        "corp\\employee6",
+        "corp\\employee7",
+        "corp\\employee8",
+        "corp\\employee9"
+      ],
+      "event_count": 30,
+      "mitre_technique": "Password Spraying",
+      "mitre_id": "T1110.003",
+      "recommendation": "Block the source IP. Enforce MFA organization-wide. Audit targeted accounts for successful logons. Consider implementing smart lockout policies that track distributed failures across accounts.",
+      "details": {
+        "max_attempts_per_account": 2,
+        "avg_attempts_per_account": 2.0,
+        "attempt_distribution": {
+          "corp\\employee1": 2,
+          "corp\\employee2": 2,
+          "corp\\employee3": 2,
+          "corp\\employee4": 2,
+          "corp\\employee5": 2,
+          "corp\\employee6": 2,
+          "corp\\employee7": 2,
+          "corp\\employee8": 2,
+          "corp\\employee9": 2,
+          "corp\\employee10": 2,
+          "corp\\employee11": 2,
+          "corp\\employee12": 2,
+          "corp\\employee13": 2,
+          "corp\\employee14": 2,
+          "corp\\employee15": 2
+        }
+      }
+    }
+  ]
+}

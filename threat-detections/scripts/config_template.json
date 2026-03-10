@@ -1,0 +1,16 @@
+{
+    "brute_force": {
+        "failure_threshold": 10,
+        "time_window_minutes": 5,
+        "max_source_ips": 3
+    },
+    "credential_stuffing": {
+        "account_threshold": 10,
+        "time_window_minutes": 5
+    },
+    "password_spraying": {
+        "account_threshold": 10,
+        "time_window_minutes": 30,
+        "max_passwords_per_source": 3
+    }
+}
