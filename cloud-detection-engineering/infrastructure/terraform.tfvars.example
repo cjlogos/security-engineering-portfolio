@@ -1,0 +1,34 @@
+# =============================================================================
+# TERRAFORM VARIABLES — Cloud Detection Engineering Lab
+# =============================================================================
+# INSTRUCTIONS:
+#   1. Copy this file:  cp terraform.tfvars.example terraform.tfvars
+#   2. Edit terraform.tfvars and fill in YOUR values below
+#   3. NEVER commit terraform.tfvars to git (it's in .gitignore)
+#
+# REQUIRED: You MUST set my_ip before running terraform apply.
+# Find your IP: https://whatismyip.com — add /32 at the end.
+# =============================================================================
+
+# --- REQUIRED ---
+my_ip = "YOUR.PUBLIC.IP.HERE/32"    # Example: "73.162.45.201/32"
+
+# --- OPTIONAL (defaults are fine for most users) ---
+
+# AWS Region — us-east-1 is cheapest for most services
+# aws_region = "us-east-1"
+
+# EC2 Instance — set to false to skip EC2 and save ~$7.59/month
+# You can still test most detections (IAM, S3, CloudTrail) without EC2
+# deploy_ec2 = true
+
+# S3 Data Events — set to true if you want object-level S3 logging
+# Costs $0.10 per 100K events. Management events (free) are enough for most detections.
+# enable_s3_data_events = false
+
+# VPC Flow Log Retention — how many days to keep flow logs in CloudWatch
+# Lower = cheaper. 1 day is fine for a lab.
+# flow_log_retention_days = 1
+
+# EC2 Instance Type — t3.micro is cheapest, t3.nano exists but has only 0.5GB RAM
+# instance_type = "t3.micro"
