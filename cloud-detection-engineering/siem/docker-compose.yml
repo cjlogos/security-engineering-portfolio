@@ -1,0 +1,104 @@
+# =============================================================================
+# DOCKER COMPOSE — ELK Stack for CloudTrail Log Analysis
+# =============================================================================
+# This deploys Elasticsearch, Logstash, and Kibana for ingesting and
+# analyzing AWS CloudTrail logs as part of the cloud detection engineering
+# project.
+#
+# USAGE:
+#   1. Copy .env.example to .env and fill in your AWS credentials
+#   2. Run: docker compose up -d
+#   3. Wait 2-3 minutes for services to start
+#   4. Open Kibana: http://localhost:5601
+#   5. Stop: docker compose down
+#   6. Stop and delete data: docker compose down -v
+#
+# RESOURCE USAGE:
+#   ~4GB RAM total (ES: 2GB, Logstash: 1GB, Kibana: 1GB)
+#   ~2GB disk for Docker images (first run only)
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Elasticsearch — stores and indexes CloudTrail events
+  # ---------------------------------------------------------------------------
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: cde-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false          # Disabled for local lab (no auth needed)
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"        # 1GB heap (enough for lab)
+      - cluster.name=cde-cluster
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - elk-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q '\"status\":\"green\"\\|\"status\":\"yellow\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  # ---------------------------------------------------------------------------
+  # Logstash — pulls CloudTrail logs from S3 and parses them
+  # ---------------------------------------------------------------------------
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.17.0
+    container_name: cde-logstash
+    environment:
+      - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - CLOUDTRAIL_BUCKET=${CLOUDTRAIL_BUCKET}
+    volumes:
+      - ./logstash/pipeline/cloudtrail.conf:/usr/share/logstash/pipeline/cloudtrail.conf:ro
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - logstash-sincedb:/usr/share/logstash/sincedb
+    ports:
+      - "5044:5044"
+    networks:
+      - elk-net
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Kibana — web UI for searching and visualizing CloudTrail events
+  # ---------------------------------------------------------------------------
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.17.0
+    container_name: cde-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+      - xpack.encryptedSavedObjects.encryptionKey=a]3kjhf98a7sd98f7a9s8d7f98a7sd9f8
+    ports:
+      - "5601:5601"
+    networks:
+      - elk-net
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  es-data:
+    driver: local
+  logstash-sincedb:
+    driver: local
+
+networks:
+  elk-net:
+    driver: bridge

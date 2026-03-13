@@ -1,0 +1,18 @@
+# =============================================================================
+# LOGSTASH CONFIGURATION
+# =============================================================================
+# General settings for Logstash. Pipeline config is in pipeline/ folder.
+# =============================================================================
+
+http.host: "0.0.0.0"
+
+# Monitoring disabled (not needed for local lab)
+monitoring.enabled: false
+
+# Pipeline settings
+pipeline.workers: 2
+pipeline.batch.size: 125
+pipeline.batch.delay: 50
+
+# Logging — set to info for normal use, debug for troubleshooting
+log.level: info

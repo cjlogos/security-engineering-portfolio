@@ -1,0 +1,56 @@
+{
+  "index_patterns": ["cloudtrail-*"],
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "index.refresh_interval": "5s"
+  },
+  "mappings": {
+    "properties": {
+      "@timestamp":           { "type": "date" },
+      "eventTime":            { "type": "date", "format": "strict_date_optional_time" },
+      "eventVersion":         { "type": "keyword" },
+      "eventSource":          { "type": "keyword" },
+      "eventName":            { "type": "keyword" },
+      "eventType":            { "type": "keyword" },
+      "eventCategory":        { "type": "keyword" },
+      "eventID":              { "type": "keyword" },
+      "awsRegion":            { "type": "keyword" },
+      "sourceIPAddress":      { "type": "keyword" },
+      "userAgent":            { "type": "text", "fields": { "keyword": { "type": "keyword" } } },
+      "errorCode":            { "type": "keyword" },
+      "errorMessage":         { "type": "text" },
+      "has_error":            { "type": "keyword" },
+      "readOnly":             { "type": "keyword" },
+      "managementEvent":      { "type": "boolean" },
+      "recipientAccountId":   { "type": "keyword" },
+      "sharedEventID":        { "type": "keyword" },
+
+      "user_type":            { "type": "keyword" },
+      "user_arn":             { "type": "keyword" },
+      "user_account_id":      { "type": "keyword" },
+      "user_principal_id":    { "type": "keyword" },
+      "user_name":            { "type": "keyword" },
+      "user_invokedBy":       { "type": "keyword" },
+      "access_key_id":        { "type": "keyword" },
+      "mfa_authenticated":    { "type": "keyword" },
+      "mfa_used":             { "type": "keyword" },
+      "login_to":             { "type": "keyword" },
+
+      "request_user_name":    { "type": "keyword" },
+      "request_bucket_name":  { "type": "keyword" },
+      "request_bucket_policy": { "type": "text" },
+      "request_policy_arn":   { "type": "keyword" },
+      "request_ip_permissions": { "type": "text" },
+
+      "requestParameters":    { "type": "object", "enabled": false },
+      "responseElements":     { "type": "object", "enabled": false },
+      "userIdentity":         { "type": "object", "enabled": false },
+      "additionalEventData":  { "type": "object", "enabled": false },
+      "serviceEventDetails":  { "type": "object", "enabled": false },
+      "tlsDetails":           { "type": "object", "enabled": false },
+
+      "mitre_tags":           { "type": "keyword" }
+    }
+  }
+}
