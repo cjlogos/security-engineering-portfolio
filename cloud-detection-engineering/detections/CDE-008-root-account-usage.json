@@ -1,0 +1,48 @@
+{
+  "rule_id": "CDE-008",
+  "rule_name": "Root Account Usage Detected",
+  "description": "Detects any use of the AWS root account. The root account has unrestricted access to all resources and cannot be limited by IAM policies or SCPs. AWS best practice is to lock away root credentials and never use the root account for day-to-day operations. Any root activity outside of initial account setup or specific root-only tasks should be treated as a potential compromise.",
+  "severity": "CRITICAL",
+  "mitre_technique": "Valid Accounts: Cloud Accounts",
+  "mitre_id": "T1078.004",
+  "mitre_tactic": "Privilege Escalation",
+  "cloudtrail_event": "Any event where userIdentity.type is Root",
+  "event_source": "Any",
+  "query_kql": "user_type:\"Root\" AND NOT eventName:\"CreateServiceLinkedRole\"",
+  "query_es": {
+    "bool": {
+      "must": [
+        { "term": { "user_type": "Root" } }
+      ],
+      "must_not": [
+        { "term": { "eventName": "CreateServiceLinkedRole" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — any root activity triggers an immediate alert"
+  },
+  "triage_steps": [
+    "Determine what action the root account performed",
+    "Check the source IP — is it from a known admin location?",
+    "Verify with account owners whether this was an authorized action",
+    "Review if this is a root-only task (account closure, support case, certain billing changes)",
+    "Check for subsequent actions in the same session — was anything modified?"
+  ],
+  "false_positive_notes": "A small number of AWS actions can ONLY be performed by root: changing account name/email, closing the account, enabling certain services for the first time, creating CloudFront key pairs. AWS internal service-linked role creation may appear as root activity.",
+  "tuning_guidance": "Exclude CreateServiceLinkedRole as it's triggered by AWS services internally. Keep all other root events at CRITICAL. Do NOT add broad exclusions — the whole point is that root should never be used.",
+  "response_actions": [
+    "Immediately contact the account owner to verify the activity",
+    "If unauthorized, rotate the root account password and MFA device",
+    "Check for new IAM users, roles, or access keys created during the root session",
+    "Review billing — root can modify payment methods and purchase reserved capacity",
+    "Enable root account activity alerts in AWS Organizations (if available)",
+    "File an incident report — any unauthorized root access is a P1 security incident"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1078/004/",
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html",
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#lock-away-credentials"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "rule_id": "CDE-005",
+  "rule_name": "CloudTrail Logging Tampering Attempt",
+  "description": "Detects attempts to disable, delete, or modify CloudTrail logging. This is one of the first actions a sophisticated attacker takes after gaining access — if they can blind the audit trail, all subsequent actions go unrecorded. This rule fires on both successful and failed attempts because the intent is malicious regardless of the outcome.",
+  "severity": "CRITICAL",
+  "mitre_technique": "Impair Defenses: Disable Cloud Logs",
+  "mitre_id": "T1562.008",
+  "mitre_tactic": "Defense Evasion",
+  "cloudtrail_event": ["StopLogging", "DeleteTrail", "UpdateTrail", "PutEventSelectors"],
+  "event_source": "cloudtrail.amazonaws.com",
+  "query_kql": "eventSource:\"cloudtrail.amazonaws.com\" AND (eventName:\"StopLogging\" OR eventName:\"DeleteTrail\" OR eventName:\"UpdateTrail\" OR eventName:\"PutEventSelectors\")",
+  "query_es": {
+    "bool": {
+      "must": [
+        { "term": { "eventSource": "cloudtrail.amazonaws.com" } }
+      ],
+      "should": [
+        { "term": { "eventName": "StopLogging" } },
+        { "term": { "eventName": "DeleteTrail" } },
+        { "term": { "eventName": "UpdateTrail" } },
+        { "term": { "eventName": "PutEventSelectors" } }
+      ],
+      "minimum_should_match": 1
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event triggers alert, including failed attempts"
+  },
+  "triage_steps": [
+    "IMMEDIATELY verify that CloudTrail is still logging (aws cloudtrail get-trail-status)",
+    "If logging was stopped, re-enable it immediately",
+    "Identify the principal who made the call",
+    "Check if this correlates with any approved maintenance or IaC deployment",
+    "Review ALL actions by this principal in the last 24 hours — assume compromise",
+    "Check for other defense evasion indicators (GuardDuty disabled, Config rules deleted)"
+  ],
+  "false_positive_notes": "Terraform or CloudFormation may update trail configurations during deployments. Legitimate trail modifications should come from IaC service roles, not human users. PutEventSelectors may fire during routine configuration changes.",
+  "tuning_guidance": "Exclude known IaC roles from UpdateTrail and PutEventSelectors only. NEVER exclude StopLogging or DeleteTrail from any principal — there is no legitimate reason for a human to stop logging outside of account decommissioning.",
+  "response_actions": [
+    "IMMEDIATELY re-enable CloudTrail if logging was stopped",
+    "Disable the principal that made the call",
+    "Rotate all credentials for the compromised identity",
+    "Initiate an incident response investigation",
+    "Review CloudTrail logs from BEFORE the tampering for the full attack timeline",
+    "Check S3 access logs on the CloudTrail bucket for log file deletion attempts"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1562/008/",
+    "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-delete-trail.html",
+    "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_StopLogging.html"
+  ]
+}

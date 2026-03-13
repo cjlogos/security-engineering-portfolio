@@ -1,0 +1,47 @@
+{
+  "rule_id": "CDE-001",
+  "rule_name": "IAM Access Key Created for Another User",
+  "description": "Detects when an IAM user creates an access key for a different user. This is a common persistence technique where an attacker with admin access creates new credentials for an account they control or want to maintain access to, without needing to know the original password.",
+  "severity": "HIGH",
+  "mitre_technique": "Account Manipulation: Additional Cloud Credentials",
+  "mitre_id": "T1098.001",
+  "mitre_tactic": "Persistence",
+  "cloudtrail_event": "CreateAccessKey",
+  "event_source": "iam.amazonaws.com",
+  "query_kql": "eventName:\"CreateAccessKey\" AND NOT errorCode:*",
+  "query_es": {
+    "bool": {
+      "must": [
+        { "term": { "eventName": "CreateAccessKey" } }
+      ],
+      "must_not": [
+        { "exists": { "field": "errorCode" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event is sufficient"
+  },
+  "triage_steps": [
+    "Compare userIdentity.arn (who made the call) with requestParameters.userName (who the key is for)",
+    "If they differ, this is a cross-user key creation — escalate immediately",
+    "Check if the target user is a service account or human account",
+    "Review the source IP and user agent for anomalies",
+    "Check for subsequent API calls using the newly created access key"
+  ],
+  "false_positive_notes": "Legitimate scenarios include: automated user onboarding pipelines, IT admins provisioning new employees, CI/CD systems creating service account keys. Validate against change management records.",
+  "tuning_guidance": "To reduce noise, add a filter excluding known automation roles or service accounts that routinely create keys. Consider correlating with a whitelist of approved key-creation principals.",
+  "response_actions": [
+    "Disable the newly created access key immediately",
+    "Investigate the principal who created the key — check for signs of compromise",
+    "Review all recent actions by both the creator and the target user",
+    "Rotate credentials for the target user if compromise is confirmed",
+    "Check CloudTrail for any API calls made using the new key"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1098/001/",
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html",
+    "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_Operations.html"
+  ]
+}

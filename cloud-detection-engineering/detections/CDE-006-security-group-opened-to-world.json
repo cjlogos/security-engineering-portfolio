@@ -1,0 +1,49 @@
+{
+  "rule_id": "CDE-006",
+  "rule_name": "Security Group Opened to 0.0.0.0/0",
+  "description": "Detects when a security group ingress rule is added that allows traffic from 0.0.0.0/0 (the entire internet). While ports 80 and 443 may be intentionally public-facing, opening other ports (SSH, RDP, databases) to the world is a critical misconfiguration that attackers exploit for initial access or persistence.",
+  "severity": "HIGH",
+  "mitre_technique": "Impair Defenses",
+  "mitre_id": "T1562",
+  "mitre_tactic": "Defense Evasion",
+  "cloudtrail_event": "AuthorizeSecurityGroupIngress",
+  "event_source": "ec2.amazonaws.com",
+  "query_kql": "eventName:\"AuthorizeSecurityGroupIngress\" AND request_ip_permissions:*0.0.0.0* AND NOT errorCode:*",
+  "query_es": {
+    "bool": {
+      "must": [
+        { "term": { "eventName": "AuthorizeSecurityGroupIngress" } },
+        { "match": { "request_ip_permissions": "0.0.0.0" } }
+      ],
+      "must_not": [
+        { "exists": { "field": "errorCode" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event is sufficient"
+  },
+  "triage_steps": [
+    "Identify which security group was modified (requestParameters.groupId)",
+    "Check what port/protocol was opened (requestParameters.ipPermissions)",
+    "If ports 80/443 — may be intentional for web servers (lower priority)",
+    "If ports 22/3389/3306/5432 — CRITICAL, should never be open to the world",
+    "Identify all EC2 instances associated with this security group",
+    "Check for immediate connection attempts from external IPs"
+  ],
+  "false_positive_notes": "Web servers and load balancers legitimately need 80/443 open to the internet. DevOps may temporarily open SSH for debugging (bad practice but common). Terraform/CloudFormation deployments may create public-facing rules as designed.",
+  "tuning_guidance": "Consider splitting into two rules: HIGH for non-80/443 ports, MEDIUM for 80/443. Exclude known IaC service roles. In strict environments, alert on ALL 0.0.0.0/0 rules regardless of port.",
+  "response_actions": [
+    "Remove the 0.0.0.0/0 rule immediately for non-web ports",
+    "Replace with the specific IP range that needs access",
+    "Investigate who made the change and why",
+    "Check VPC Flow Logs for inbound connections while the rule was active",
+    "Consider implementing AWS Config rules to auto-remediate open security groups"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1562/",
+    "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-rules-reference.html",
+    "https://docs.aws.amazon.com/config/latest/developerguide/restricted-ssh.html"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "rule_id": "CDE-003",
+  "rule_name": "Privilege Escalation — Admin Policy Attached to User",
+  "description": "Detects when AdministratorAccess, PowerUserAccess, or IAMFullAccess managed policies are attached to an IAM user. This is the most direct form of privilege escalation in AWS — an attacker with iam:AttachUserPolicy permission can grant themselves full admin access in a single API call.",
+  "severity": "HIGH",
+  "mitre_technique": "Account Manipulation",
+  "mitre_id": "T1098",
+  "mitre_tactic": "Privilege Escalation",
+  "cloudtrail_event": ["AttachUserPolicy", "AttachRolePolicy", "PutUserPolicy"],
+  "event_source": "iam.amazonaws.com",
+  "query_kql": "(eventName:\"AttachUserPolicy\" OR eventName:\"AttachRolePolicy\" OR eventName:\"PutUserPolicy\") AND (request_policy_arn:*AdministratorAccess* OR request_policy_arn:*PowerUserAccess* OR request_policy_arn:*IAMFullAccess*)",
+  "query_es": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              { "term": { "eventName": "AttachUserPolicy" } },
+              { "term": { "eventName": "AttachRolePolicy" } },
+              { "term": { "eventName": "PutUserPolicy" } }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      ],
+      "should": [
+        { "wildcard": { "request_policy_arn": "*AdministratorAccess*" } },
+        { "wildcard": { "request_policy_arn": "*PowerUserAccess*" } },
+        { "wildcard": { "request_policy_arn": "*IAMFullAccess*" } }
+      ],
+      "minimum_should_match": 1
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event is sufficient"
+  },
+  "triage_steps": [
+    "Identify WHO attached the policy (userIdentity.arn)",
+    "Identify WHO received the policy (requestParameters.userName or requestParameters.roleName)",
+    "Determine if this was an approved change (check change management tickets)",
+    "Review subsequent actions by the user who received the elevated permissions",
+    "Check if the attaching principal's credentials may be compromised"
+  ],
+  "false_positive_notes": "Legitimate scenarios: new admin onboarding, emergency break-glass procedures, terraform/CloudFormation deployments. Cross-reference with IaC pipelines and change management.",
+  "tuning_guidance": "Exclude known IaC service roles (e.g., terraform-deployer) and CI/CD pipelines. Consider broadening to detect any policy attachment, not just admin-level, for higher-security environments.",
+  "response_actions": [
+    "Detach the escalated policy immediately",
+    "Investigate the principal who performed the attachment",
+    "Review all actions taken by the target user/role after the policy was attached",
+    "If unauthorized, disable both the attaching and receiving principals",
+    "Audit all IAM policy attachments in the last 24 hours for similar patterns"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1098/",
+    "https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/",
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "rule_id": "CDE-007",
+  "rule_name": "API Activity from Unusual AWS Region",
+  "description": "Detects API calls made in AWS regions outside the organization's expected operating regions. Attackers who steal credentials often operate from different geographic regions, and many organizations only use 1-3 AWS regions. Activity in unexpected regions may indicate credential theft and lateral movement.",
+  "severity": "MEDIUM",
+  "mitre_technique": "Valid Accounts",
+  "mitre_id": "T1078",
+  "mitre_tactic": "Lateral Movement",
+  "cloudtrail_event": "Any (filtered by awsRegion)",
+  "event_source": "Any",
+  "expected_regions": ["us-east-1"],
+  "query_kql": "NOT awsRegion:\"us-east-1\" AND NOT awsRegion:\"us-global\" AND NOT eventName:\"AssumeRole\" AND NOT readOnly:\"true\"",
+  "query_es": {
+    "bool": {
+      "must_not": [
+        { "term": { "awsRegion": "us-east-1" } },
+        { "term": { "awsRegion": "us-global" } },
+        { "term": { "eventName": "AssumeRole" } },
+        { "term": { "readOnly": "true" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 3,
+    "time_window": "5 minutes",
+    "rationale": "A single off-region call may be a UI artifact. Three or more write operations in an unexpected region within 5 minutes indicates intentional activity."
+  },
+  "triage_steps": [
+    "Identify which region the activity occurred in",
+    "Determine if the organization has any legitimate workloads in that region",
+    "Check the user identity — is this a human user or service role?",
+    "Review the specific API calls — are they creating resources (EC2, Lambda)?",
+    "Check for crypto-mining indicators (RunInstances for GPU instance types in unusual regions)"
+  ],
+  "false_positive_notes": "Global services (IAM, STS, Route53) may log events with region 'us-east-1' regardless of where the call originates. AWS Console may pre-flight requests to multiple regions. Some services auto-replicate across regions.",
+  "tuning_guidance": "Customize the expected_regions list for your organization. Start with a 7-day baseline to identify all regions your workloads use. Exclude read-only events to reduce noise. Focus on write/mutate operations in unexpected regions.",
+  "response_actions": [
+    "Investigate the identity making off-region calls",
+    "Check for newly created resources in the unexpected region (EC2, Lambda, S3)",
+    "If unauthorized resources exist, terminate them immediately",
+    "Rotate credentials for the affected identity",
+    "Consider implementing SCP (Service Control Policy) to deny actions in unused regions"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1078/",
+    "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples_general.html",
+    "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-record-contents.html"
+  ]
+}

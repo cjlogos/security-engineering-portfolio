@@ -1,0 +1,48 @@
+{
+  "rule_id": "CDE-004",
+  "rule_name": "Console Login Without MFA",
+  "description": "Detects AWS Console logins where multi-factor authentication was not used. Console access without MFA significantly increases the risk of account compromise, especially if credentials were obtained via phishing or credential stuffing.",
+  "severity": "MEDIUM",
+  "mitre_technique": "Valid Accounts",
+  "mitre_id": "T1078",
+  "mitre_tactic": "Initial Access",
+  "cloudtrail_event": "ConsoleLogin",
+  "event_source": "signin.amazonaws.com",
+  "query_kql": "eventName:\"ConsoleLogin\" AND mfa_used:\"No\" AND NOT errorCode:*",
+  "query_es": {
+    "bool": {
+      "must": [
+        { "term": { "eventName": "ConsoleLogin" } },
+        { "term": { "mfa_used": "No" } }
+      ],
+      "must_not": [
+        { "exists": { "field": "errorCode" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event is sufficient"
+  },
+  "triage_steps": [
+    "Identify the user who logged in without MFA",
+    "Check if MFA is configured but was bypassed, or if MFA was never set up",
+    "Review the source IP — is it from the expected corporate network?",
+    "Check for any sensitive actions performed during this session",
+    "Verify whether this is a service account or break-glass account (may be expected)"
+  ],
+  "false_positive_notes": "Break-glass accounts may intentionally not have MFA (though best practice is to have hardware MFA on them). Root account logins from AWS support may appear without MFA. New employee accounts during initial setup may briefly lack MFA.",
+  "tuning_guidance": "Exclude known break-glass accounts by username. For high-security environments, elevate severity to HIGH. Consider a separate rule for root account logins without MFA at CRITICAL severity.",
+  "response_actions": [
+    "Contact the user to verify the login was legitimate",
+    "If unauthorized, immediately change the user's password and disable access keys",
+    "Enforce MFA registration for the account",
+    "Review all actions performed during the session",
+    "Consider implementing a Conditional Access / SCP requiring MFA for console access"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1078/",
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html",
+    "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-record-contents.html"
+  ]
+}

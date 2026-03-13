@@ -1,0 +1,55 @@
+{
+  "rule_id": "CDE-002",
+  "rule_name": "S3 Bucket Policy Changed to Public Access",
+  "description": "Detects when an S3 bucket policy is modified to allow public access (Principal: *). Public S3 buckets are one of the most common causes of cloud data breaches. An attacker may make a bucket public to exfiltrate data or an insider may accidentally expose sensitive information.",
+  "severity": "CRITICAL",
+  "mitre_technique": "Data from Cloud Storage Object",
+  "mitre_id": "T1530",
+  "mitre_tactic": "Collection",
+  "cloudtrail_event": ["PutBucketPolicy", "PutBucketAcl"],
+  "event_source": "s3.amazonaws.com",
+  "query_kql": "(eventName:\"PutBucketPolicy\" OR eventName:\"PutBucketAcl\") AND NOT errorCode:*",
+  "query_es": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              { "term": { "eventName": "PutBucketPolicy" } },
+              { "term": { "eventName": "PutBucketAcl" } }
+            ],
+            "minimum_should_match": 1
+          }
+        }
+      ],
+      "must_not": [
+        { "exists": { "field": "errorCode" } }
+      ]
+    }
+  },
+  "threshold": {
+    "count": 1,
+    "time_window": "N/A — single event is sufficient"
+  },
+  "triage_steps": [
+    "Check requestParameters.bucketPolicy for 'Principal': '*' or 'Principal': {'AWS': '*'}",
+    "Identify which bucket was modified (requestParameters.bucketName)",
+    "Determine what data is in the bucket — is it sensitive?",
+    "Check if the bucket is tagged as intentionally public (e.g., static website hosting)",
+    "Review the source IP and user identity for signs of compromise"
+  ],
+  "false_positive_notes": "Legitimate public buckets include: static website hosting, public dataset distribution, CDN origin buckets. Maintain a whitelist of approved public buckets and exclude them from alerting.",
+  "tuning_guidance": "Add exclusions for known public-by-design buckets. Consider a two-stage alert: first detect the policy change, then check if the policy actually contains public access (requires parsing requestParameters).",
+  "response_actions": [
+    "IMMEDIATELY remove the public policy or ACL",
+    "Enable S3 Block Public Access at the account level to prevent future occurrences",
+    "Audit the bucket's access logs to determine if data was accessed while public",
+    "Investigate the identity that made the change",
+    "Report the exposure window to your security team and compliance"
+  ],
+  "references": [
+    "https://attack.mitre.org/techniques/T1530/",
+    "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html",
+    "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+  ]
+}
